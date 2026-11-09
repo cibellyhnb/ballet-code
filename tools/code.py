@@ -1,0 +1,33 @@
+import asyncio
+from playwright.async_api import async_playwright
+import os
+RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PAGINA = 'file://' + os.path.join(RAIZ, 'dist-single', 'index.html')
+os.makedirs(os.path.join(RAIZ, 'tools', 'shots'), exist_ok=True)
+os.chdir(os.path.join(RAIZ, 'tools'))
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+        pg = await b.new_page(viewport={'width':1360,'height':820})
+        await pg.add_init_script("localStorage.setItem('balletcode.boasvindas.v1','1')")
+        errs=[]; pg.on('pageerror', lambda e: errs.append(str(e)))
+        await pg.goto(PAGINA); await pg.wait_for_timeout(1000)
+        await pg.click('text=Estúdio livre'); await pg.wait_for_timeout(1000)
+        await pg.click('text=Combinação dos dois lados'); await pg.wait_for_timeout(800)
+        await pg.click('text=⤢ ampliar'); await pg.wait_for_timeout(800)
+        await pg.screenshot(path='shots/e_grande.png')
+        await pg.click('.level.blank'); await pg.wait_for_timeout(600)
+        await pg.click('.notebook-tabs >> text=código'); await pg.wait_for_timeout(400)
+        await pg.fill('.code-box textarea', 'irParaOCentro()\npés(5ª posição)\npreparação(direita)\nrepetir 2 vezes:\n    changement()\nfouettéDeAdage(direita)\ncorpo(en face)\nfinalizar(direita)\nvoar()')
+        await pg.click('text=aplicar nos blocos'); await pg.wait_for_timeout(400)
+        print('erro:', await pg.inner_text('.code-editor .oops'))
+        await pg.screenshot(path='shots/e_code_err.png')
+        txt = await pg.input_value('.code-box textarea')
+        await pg.fill('.code-box textarea', txt.replace('\nvoar()', '\npausa(2 tempos)'))
+        await pg.click('text=aplicar nos blocos'); await pg.wait_for_timeout(800)
+        st = await pg.evaluate("() => { const s = window.__ballet.state(); return [s.timeline.total, s.errors.map(e=>e.msg), s.program.principal.length] }")
+        print('aplicado:', st)
+        await pg.click('.notebook-tabs >> text=blocos'); await pg.wait_for_timeout(800)
+        await pg.screenshot(path='shots/e_blocos.png')
+        print('errors', errs); await b.close()
+asyncio.run(main())

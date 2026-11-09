@@ -1,0 +1,40 @@
+import asyncio
+from playwright.async_api import async_playwright
+import os
+RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PAGINA = 'file://' + os.path.join(RAIZ, 'dist-single', 'index.html')
+os.makedirs(os.path.join(RAIZ, 'tools', 'shots'), exist_ok=True)
+os.chdir(os.path.join(RAIZ, 'tools'))
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+        pg = await b.new_page(viewport={'width':1366,'height':768})
+        await pg.add_init_script("localStorage.setItem('balletcode.boasvindas.v1','1')")
+        errs=[]; pg.on('pageerror', lambda e: errs.append(str(e)))
+        await pg.goto(PAGINA); await pg.wait_for_timeout(1200)
+        await pg.evaluate("window.__ballet.setMode('estudio')"); await pg.wait_for_timeout(600)
+        await pg.evaluate("window.__ballet.setPreset('tombes')"); await pg.wait_for_timeout(600)
+        await pg.click('text=✿ apresentar no palco'); await pg.wait_for_timeout(800)
+        await pg.screenshot(path='shots/pal_titulo.png')
+        await pg.wait_for_timeout(2400)
+        await pg.screenshot(path='shots/pal_abrindo.png')
+        await pg.wait_for_timeout(1500)
+        # pula para perto do fim
+        await pg.evaluate("window.__ballet.setBeat(14)"); await pg.wait_for_timeout(1200)
+        await pg.screenshot(path='shots/pal_danca.png')
+        await pg.evaluate("(()=>{const s=window.__ballet.state(); window.__ballet.setBeat(s.timeline.total-0.2)})()")
+        await pg.evaluate("window.__ballet.state()")
+        await pg.evaluate("window.__ballet.play && window.__ballet.play()")
+        await pg.wait_for_timeout(3300)
+        await pg.screenshot(path='shots/pal_flores.png')
+        await pg.wait_for_timeout(4000)
+        await pg.screenshot(path='shots/pal_bravo.png')
+        print('bravo?', await pg.locator('.palco-bravo').count())
+        # palco com barra
+        await pg.click('text=voltar ao estúdio'); await pg.wait_for_timeout(600)
+        await pg.evaluate("window.__ballet.setPreset('croix')"); await pg.wait_for_timeout(500)
+        await pg.click('text=✿ apresentar no palco'); await pg.wait_for_timeout(5200)
+        await pg.screenshot(path='shots/pal_barra.png')
+        print('errs', errs)
+        await b.close()
+asyncio.run(main())
