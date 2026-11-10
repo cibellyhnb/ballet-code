@@ -237,21 +237,40 @@ function Bailarina() {
 
 /*******************************************************************************
  * Ponta
- * funcao: sapatilha de ponta em pe (en pointe) em SVG, com as fitas cruzando no
- * tornozelo e um laco.
+ * funcao: par de sapatilhas de ponta em SVG, penduradas pelas fitas presas num
+ * laco. a segunda e a primeira espelhada (scale -1 no eixo x).
  * recebe: nada. retorna: o svg.
  ******************************************************************************/
 function Ponta() {
+  // uma sapatilha de perfil, com a ponta para baixo: corpo de cetim, abertura com o forro, costura da caixa,
+  // brilho e a plataforma no bico
+  const sapatilha = (
+    <>
+      <path
+        d="M-7.5 1 C -10.5 7, -10.8 20, -8.4 31 C -7 38, -5.2 43, -3.6 47 L 3.6 47 C 6 41, 9.2 33, 10 24 C 10.8 15, 9 7, 6.5 2.5 C 2 -1.5, -4 -1.5, -7.5 1 Z"
+        fill="#f9c3d5"
+        stroke="#e48aab"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <path d="M-6.4 2.6 C -3 0.4, 3 0.6, 5.8 3.4 C 5 11.5, -4.5 12.5, -6.4 2.6 Z" fill="#fde9f0" stroke="#e48aab" strokeWidth="1" />
+      <path d="M-6.6 33 C -2.5 35.6, 3 35.4, 7 32" stroke="#e48aab" strokeWidth="1" fill="none" />
+      <path d="M7 14 C 7.6 21, 6.4 29, 4.4 37" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" opacity="0.75" />
+      <rect x="-4.2" y="46" width="8.4" height="2.6" rx="1.3" fill="#e48aab" />
+    </>
+  )
   return (
     <svg viewBox="0 0 80 100" className="bv-bailarina" aria-hidden>
-      <ellipse cx="40" cy="96" rx="12" ry="2.4" fill="#f6c9d8" opacity="0.7" />
-      <path d="M33 8 L33 48 C 31 58, 33 70, 36 80 L 36 92 L 46 92 L 46 80 C 49 70, 51 58, 48 48 L48 8 Z" fill="#f9dcc8" />
-      <path d="M33 48 C 31 58, 33 70, 36 80 L 36 93 L 46 93 L 46 80 C 49 70, 51 58, 48 48 C 44 52, 37 52, 33 48 Z" fill="#f9c3d5" stroke="#e48aab" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M36 52 C 39 55, 43 55, 46 52" stroke="#e48aab" strokeWidth="1.2" fill="none" />
-      <rect x="35.5" y="90" width="11" height="4" rx="1.5" fill="#e48aab" />
-      <path d="M32 30 L 49 42 M 49 30 L 32 42 M32 40 L 49 50" stroke="#f48bb0" strokeWidth="2.6" strokeLinecap="round" />
-      <path d="M49 30 C 58 26, 60 34, 52 34 C 60 36, 58 44, 49 38" fill="#f48bb0" />
-      <path d="M52 34 C 56 44, 54 52, 58 58" stroke="#f48bb0" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* as fitas descem do laco ate a abertura de cada sapatilha */}
+      <path d="M38 14 C 30 20, 25 30, 26.5 41" stroke="#f48bb0" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M42 14 C 50 20, 55 30, 53.5 41" stroke="#f48bb0" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M40 13 C 33 6, 26 9, 30 15 C 33 18, 37 16, 40 13 Z" fill="#f48bb0" />
+      <path d="M40 13 C 47 6, 54 9, 50 15 C 47 18, 43 16, 40 13 Z" fill="#f48bb0" />
+      <path d="M38.6 13.6 C 36 18, 33 21, 31 24" stroke="#f48bb0" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M41.4 13.6 C 44 18, 47 21, 49 24" stroke="#f48bb0" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <circle cx="40" cy="13" r="2.4" fill="#e4729b" />
+      <g transform="translate(28 42) rotate(12)">{sapatilha}</g>
+      <g transform="translate(52 42) rotate(-12) scale(-1 1)">{sapatilha}</g>
     </svg>
   )
 }

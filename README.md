@@ -6,7 +6,7 @@ Ballet.code é um jogo de programação em blocos, no estilo do Scratch, em que 
 uma bailarina 3D dança exatamente o que o seu programa manda, no tempo da música. Os passos seguem o método RAD,
 com os nomes em francês, e uma professora confere se a sua combinação ficou igual ao exemplo.
 
-**[▶ Jogar agora](https://SEU-LINK.vercel.app)**: funciona direto no navegador, no computador, no tablet e no celular. Não precisa instalar nada.
+**[▶ Jogar agora](https://ballet-code-jgm8.vercel.app)**: funciona direto no navegador, no computador, no tablet e no celular. Não precisa instalar nada.
 
 ![Tela inicial do Ballet.code, com a bailarina aquecendo](docs/inicio.png)
 
@@ -62,7 +62,7 @@ saindo para a frente, passo que precisa da 5ª posição. Assim você aprende pr
 Você precisa do [Node.js](https://nodejs.org) instalado.
 
 ```bash
-git clone https://github.com/SEU-USUARIO/ballet-code.git
+git clone https://github.com/cibellyhnb/ballet-code.git
 cd ballet-code
 npm install
 npm run dev
